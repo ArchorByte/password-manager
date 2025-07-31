@@ -3,7 +3,7 @@
 #ifndef PASSWORDS_CREATE_HPP
 #define PASSWORDS_CREATE_HPP
 
-void create_password
+Account create_password
 (
     const Account &account
 );

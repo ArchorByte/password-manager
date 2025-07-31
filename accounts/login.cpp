@@ -7,10 +7,45 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
+#include <vector>
 
 // Log into an account.
 Account login()
 {
+    std::vector<std::string> accounts_list;
+
+    // List any folder and file in the data directory.
+    for (const auto &object : std::filesystem::directory_iterator("./data/"))
+    {
+        std::filesystem::path object_path = object.path();
+
+        // We only take directories as accounts are declared by their directories and store the account data.
+        if (object.is_directory())
+        {
+            std::string object_name = object_path.filename();
+            accounts_list.emplace_back(object_name); // Register the account in the list.
+        }
+    }
+
+    if (accounts_list.size() < 1)
+    {
+        std::cerr << "\nNo account registered yet! Please, create an account before continuing." << std::endl;
+        return { "", "" }; // Stay logged out.
+    }
+
+    std::cout << "\nAvailable accounts: ";
+    int i = 0;
+
+    for (const std::string &account_name : accounts_list)
+    {
+        // Format the output depending on if it's the first item or not.
+        if (i == 0) std::cout << account_name;
+        else std::cout << ", " << account_name;
+
+        i++;
+    }
+
+    std::cout << std::endl;
     std::string account_name;
     int attemps = 0;
     int max_retries = 3;

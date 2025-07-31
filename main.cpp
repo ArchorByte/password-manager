@@ -90,10 +90,10 @@ int main()
         switch (stoi(option))
         {
             case 1:
-                create_password(account);
+                account = create_password(account);
                 break;
             case 2:
-                show_password(account);
+                account = show_password(account);
                 break;
             case 3:
                 account = delete_password(account);

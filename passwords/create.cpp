@@ -13,11 +13,17 @@
 #include <fstream>
 
 // Create a new password for an account.
-void create_password
+Account create_password
 (
     const Account &account
 )
 {
+    if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
+    {
+        std::cerr << "This account doesn't exist!" << std::endl;
+        return { "", "" }; // Force log out.
+    }
+
     std::string password_name;
     int attempts = 0;
     int max_retries = 3;
@@ -49,7 +55,7 @@ void create_password
     if (attempts >= max_retries)
     {
         std::cerr << "\nAborted after too many failures!" << std::endl;
-        return;
+        return account;
     }
 
     std::string password;
@@ -75,7 +81,7 @@ void create_password
     if (attempts >= max_retries)
     {
         std::cerr << "Aborted after too many failures!" << std::endl;
-        return;
+        return account;
     }
 
     // Open the data file in read-only mode.
@@ -84,7 +90,7 @@ void create_password
     if (!data_file.is_open())
     {
         std::cerr << "\nFailed to open the account data file for reading!" << std::endl;
-        return;
+        return account;
     }
 
     // Select the saved account password and make sure it's 16-bits large.
@@ -99,9 +105,11 @@ void create_password
     std::string encoded_salting = base64_encode(salting);                        // Encode the salting with Base64.
 
     // Create the password file and write the data into it.
-    std::ofstream pwd_file("./data/" + account.account_name + "/" + password_name + ".txt");
-    pwd_file << encrypted_password << "-" << encoded_salting;
+    std::ofstream password_file("./data/" + account.account_name + "/" + password_name + ".txt");
+    password_file << encrypted_password << "-" << encoded_salting;
 
-    pwd_file.close();
+    password_file.close();
     std::cout << "\nPassword created successfully!" << std::endl;
+
+    return account;
 }

@@ -3,10 +3,12 @@
 #include "../main.hpp"
 #include "../tools/text_format.hpp"
 #include "../passwords/check.hpp"
+#include "list.hpp"
 
 #include <string>
 #include <iostream>
 #include <filesystem>
+#include <vector>
 
 // Delete a password from an account.
 // We log out the user if (s)he fails to provide the account password too many times.
@@ -15,6 +17,32 @@ Account delete_password
     const Account &account
 )
 {
+    if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
+    {
+        std::cerr << "This account doesn't exist!" << std::endl;
+        return { "", "" }; // Force log out.
+    }
+
+    std::vector<std::string> passwords = list_account_passwords(account.account_name);
+
+    if (passwords.size() < 1)
+    {
+        std::cerr << "\nNo password available yet! Create a new password to get started." << std::endl;
+        return account;
+    }
+
+    std::cout << "\nAvailable passwords: ";
+    int i = 0;
+
+    for (const std::string &password : passwords)
+    {
+        // Format the output depending on if it's the first item or not.
+        if (i == 0) std::cout << password;
+        else std::cout << ", " << password;
+
+        i++;
+    }
+
     std::string password_name;
     int attempts = 0;
     int max_retries = 3;

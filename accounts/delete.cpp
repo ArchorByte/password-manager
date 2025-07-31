@@ -14,7 +14,7 @@ Account delete_account
     const Account &account
 )
 {
-    if (!std::filesystem::exists("./data/" + account.account_name))
+    if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
     {
         std::cerr << "This account doesn't exist!" << std::endl;
         return { "", "" };
