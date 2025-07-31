@@ -4,18 +4,46 @@
 #include "../tools/text_format.hpp"
 #include "../tools/base64.hpp"
 #include "../crypto/decryption.hpp"
+#include "list.hpp"
 
 #include <string>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 // Show a selected password to the user.
-void show_password
+Account show_password
 (
     const Account &account
 )
 {
+    if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
+    {
+        std::cerr << "This account doesn't exist!" << std::endl;
+        return { "", "" }; // Force log out.
+    }
+
+    std::vector<std::string> passwords = list_account_passwords(account.account_name);
+
+    if (passwords.size() < 1)
+    {
+        std::cerr << "\nNo password available yet! Create a new password to get started." << std::endl;
+        return account;
+    }
+
+    std::cout << "\nAvailable passwords: ";
+    int i = 0;
+
+    for (const std::string &password : passwords)
+    {
+        // Format the output depending on if it's the first item or not.
+        if (i == 0) std::cout << password;
+        else std::cout << ", " << password;
+
+        i++;
+    }
+
     std::string password_name;
     int attempts = 0;
     int max_retries = 3;
@@ -47,7 +75,7 @@ void show_password
     if (attempts >= max_retries)
     {
         std::cerr << "\nAborted after too many failures!" << std::endl;
-        return;
+        return account;
     }
 
     // Open the password file in read-only mode.
@@ -56,7 +84,7 @@ void show_password
     if (!password_file.is_open())
     {
         std::cerr << "\nFailed to open the password file!" << std::endl;
-        return;
+        return account;
     }
 
     // Read the file data.
@@ -81,4 +109,6 @@ void show_password
 
     std::string password = decrypt(encrypted_password, account_password, salting); // Fully decrypt the password.
     std::cout << "Password " << password_name << ": " << password << std::endl << std::endl;
+
+    return account;
 }

@@ -18,7 +18,7 @@ The default compilation scripts (**build.sh** / **build.bat**) compile the entir
 - `./build/win/out/pwd.exe` for Windows systems.
 - `./build/linux/out/pwd` for Linux systems.
 
-# ❔ How to use it?
+# ❔ How to use it
 To use this software, you only need to run the executable, create a new account if you are running it for the first time, or simply log in if it's not. Then, you can freely create, show and remove passwords to your account!
 
 # 🤝 User Agreement
