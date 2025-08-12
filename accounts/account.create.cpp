@@ -1,9 +1,9 @@
-#include "create.hpp"
+#include "account.create.hpp"
 
-#include "../tools/text_format.hpp"
-#include "../crypto/salting.hpp"
-#include "../crypto/encryption.hpp"
-#include "../tools/base64.hpp"
+#include "../utils/tool.text_format.hpp"
+#include "../utils/tool.generator.hpp"
+#include "../crypto/crypto.encryption.hpp"
+#include "../crypto/tool.base64.hpp"
 
 #include <iostream>
 #include <string>
@@ -11,9 +11,10 @@
 #include <fstream>
 
 // Create a new account.
-void create_account()
+void create_new_account()
 {
     std::string account_name;
+
     int attempts = 0;
     int max_retries = 3;
 
@@ -100,8 +101,8 @@ void create_account()
         throw std::runtime_error("Failed to create the data file '" + account_name + "/data.txt'!");
     }
 
-    std::string salting = generate_salting(); // Generate the salting and make sure it's 16-bits large.
-    salting.resize(16, '\0');                 // Add padding zeros or cut the salting if necessary.
+    std::string salting = generate_character_chain(16, true, true, false); // Generate the salting and make sure it's 16-bits large.
+    salting.resize(16, '\0');                                              // Add padding zeros or cut the salting if necessary.
 
     std::string encryption_key = account_password; // Use the account password as encryption key and make sure it's 16-bits large.
     encryption_key.resize(16, '\0');               // Add padding zeros or cut the key if necessary.

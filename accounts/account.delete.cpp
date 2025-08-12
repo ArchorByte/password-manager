@@ -1,14 +1,14 @@
-#include "delete.hpp"
+#include "account.delete.hpp"
 
 #include "../main.hpp"
-#include "../passwords/check.hpp"
+#include "../passwords/password.validation.hpp"
 
 #include <string>
 #include <iostream>
 #include <filesystem>
 
 // Delete an account.
-// We log out the user if (s)he fails too many times.
+// We log out the user if (s)he fails identification too many times for security reasons.
 Account delete_account
 (
     const Account &account
@@ -29,7 +29,7 @@ Account delete_account
         std::cout << "\nEnter your account password: ";
         std::cin >> account_password;
 
-        bool access_granted = check_password(account.account_name, account_password);
+        bool access_granted = validate_password(account.account_name, account_password);
 
         if (!access_granted)
         {

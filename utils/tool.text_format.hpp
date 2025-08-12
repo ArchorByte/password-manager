@@ -1,7 +1,7 @@
 #include <string>
 
-#ifndef TOOLS_TEXTFORMAT_HPP
-#define TOOLS_TEXTFORMAT_HPP
+#ifndef UTILS_TEXTFORMAT_HPP
+#define UTILS_TEXTFORMAT_HPP
 
 std::string trim
 (

@@ -1,8 +1,8 @@
-#include "decryption.hpp"
+#include "crypto.decryption.hpp"
 
-#include "../tools/aes128_cbc.hpp"
-#include "../tools/base64.hpp"
-#include "../tools/hex.hpp"
+#include "tool.aes128_cbc.hpp"
+#include "tool.base64.hpp"
+#include "tool.hex.hpp"
 
 #include <string>
 

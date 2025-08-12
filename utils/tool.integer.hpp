@@ -1,7 +1,7 @@
 #include <string>
 
-#ifndef TOOLS_INTEGER_HPP
-#define TOOLS_INTEGER_HPP
+#ifndef UTILS_INTEGER_HPP
+#define UTILS_INTEGER_HPP
 
 bool is_an_integer
 (

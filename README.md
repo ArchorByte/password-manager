@@ -23,3 +23,13 @@ To use this software, you only need to run the executable, create a new account 
 
 # 🤝 User Agreement
 By downloading and/or using this program, you confirm that you are solely responsible for how you use this software. You agree as well that this agreement extends to any prior version of the program, and any new version of the user agreement in any future update, overwrites this one.
+
+# 💻 Contribution
+If you want to contribute to the project, please respect the global syntax and the file naming. <br/>
+If the syntax is not respected and/or the file naming is not conform, we may reject your pull request! <br/>
+**Do not forget to verify that your fork is up-to-date when you are going to pull request your modifications!** <br/>
+Here is the project tree:
+- `accounts/` -> Code that manages the accounts system.
+- `crypto/` -> Code used to encrypt, decrypt, encode and decode data.
+- `passwords/` -> Code that manages the saved passwords and verifies passwords on login.
+- `utils/` -> Tools that have general purposes.

@@ -1,11 +1,11 @@
-#include "create.hpp"
+#include "password.create.hpp"
 
 #include "../main.hpp"
-#include "../tools/text_format.hpp"
-#include "../crypto/encryption.hpp"
-#include "../crypto/decryption.hpp"
-#include "../tools/base64.hpp"
-#include "../crypto/salting.hpp"
+#include "../utils/tool.text_format.hpp"
+#include "../crypto/crypto.encryption.hpp"
+#include "../crypto/crypto.decryption.hpp"
+#include "../crypto/tool.base64.hpp"
+#include "../utils/tool.generator.hpp"
 
 #include <string>
 #include <iostream>
@@ -13,7 +13,7 @@
 #include <fstream>
 
 // Create a new password for an account.
-Account create_password
+Account create_new_password
 (
     const Account &account
 )
@@ -98,7 +98,7 @@ Account create_password
     encryption_key.resize(16, '\0');
 
     // Generate a salting and make sure it's 16-bits large.
-    std::string salting = generate_salting();
+    std::string salting = generate_character_chain(16, true, true, false);
     salting.resize(16, '\0');
 
     std::string encrypted_password = encrypt(password, encryption_key, salting); // Fully encrypt the password.

@@ -1,9 +1,9 @@
-#include "delete.hpp"
+#include "password.delete.hpp"
 
 #include "../main.hpp"
-#include "../tools/text_format.hpp"
-#include "../passwords/check.hpp"
-#include "list.hpp"
+#include "../utils/tool.text_format.hpp"
+#include "password.validation.hpp"
+#include "password.list.hpp"
 
 #include <string>
 #include <iostream>
@@ -85,7 +85,7 @@ Account delete_password
         std::cout << "Enter your account password: ";
         std::cin >> account_password;
 
-        bool access_granted = check_password(account.account_name, account_password);
+        bool access_granted = validate_password(account.account_name, account_password);
 
         if (!access_granted)
         {

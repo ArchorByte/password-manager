@@ -1,13 +1,14 @@
 #include "main.hpp"
 
-#include "tools/terminal.hpp"
-#include "tools/integer.hpp"
-#include "accounts/create.hpp"
-#include "accounts/login.hpp"
-#include "accounts/delete.hpp"
-#include "passwords/create.hpp"
-#include "passwords/delete.hpp"
-#include "passwords/show.hpp"
+#include "utils/tool.console.hpp"
+#include "utils/tool.integer.hpp"
+#include "accounts/account.create.hpp"
+#include "accounts/account.login.hpp"
+#include "accounts/account.delete.hpp"
+#include "passwords/password.create.hpp"
+#include "passwords/password.delete.hpp"
+#include "passwords/password.show.hpp"
+#include "passwords/password.generator.hpp"
 
 #include <iostream>
 #include <string>
@@ -28,7 +29,7 @@ int main()
 
     while (true)
     {
-        clear_terminal();
+        clear_console();
         std::cout << "Open Source C++ Password Manager. https://github.com/ArchorByte/password-manager" << std::endl;
 
         // If the user isn't logged in any account.
@@ -52,10 +53,10 @@ int main()
             switch (stoi(option))
             {
                 case 1:
-                    account = login();
+                    account = account_login();
                     break;
                 case 2:
-                    create_account();
+                    create_new_account();
                     break;
                 case 3:
                     std::cout << "Bye!" << std::endl;
@@ -73,7 +74,7 @@ int main()
         }
 
         std::cout << "Currently logged in as " << account.account_name << "!" << std::endl << std::endl;
-        std::cout << "Available options:\n1) Create a password.\n2) Show a password.\n3) Remove a password.\n4) Log out.\n5) Delete account.\n6) Quit program." << std::endl << std::endl;
+        std::cout << "Available options:\n1) Create a password.\n2) Show a password.\n3) Remove a password.\n4) Generate a password.\n5) Log out.\n6) Delete account.\n7) Quit program." << std::endl << std::endl;
         std::cout << "Select option: ";
 
         std::string option;
@@ -90,7 +91,7 @@ int main()
         switch (stoi(option))
         {
             case 1:
-                account = create_password(account);
+                account = create_new_password(account);
                 break;
             case 2:
                 account = show_password(account);
@@ -99,13 +100,16 @@ int main()
                 account = delete_password(account);
                 break;
             case 4:
+                generate_password();
+                break;
+            case 5:
                 account = { "", "" };
                 std::cout << "Bye!" << std::endl;
                 break;
-            case 5:
+            case 6:
                 account = delete_account(account);
                 break;
-            case 6:
+            case 7:
                 std::cout << "Bye!" << std::endl;
                 return 0;
                 break;
