@@ -5,7 +5,8 @@
 #include <chrono>
 
 /*
-	Code coming from: https://github.com/Reynaldev/Base64.
+	Code coming from https://github.com/Reynaldev/Base64.
+	TODO: Modify the code syntax and structure to match with the rest of the project.
 */
 
 // Base64 Alphabet code function

@@ -9,7 +9,7 @@ include_directories (
     ${CMAKE_SOURCE_DIR}/accounts
     ${CMAKE_SOURCE_DIR}/crypto
     ${CMAKE_SOURCE_DIR}/passwords
-    ${CMAKE_SOURCE_DIR}/tools
+    ${CMAKE_SOURCE_DIR}/utils
 )
 
 # Select all C++ scripts over the previously selected folders.
@@ -17,7 +17,7 @@ file(GLOB MAIN main.cpp)
 file(GLOB ACCOUNTS accounts/*.cpp)
 file(GLOB CRYPTO crypto/*.cpp)
 file(GLOB PASSWORDS passwords/*.cpp)
-file(GLOB TOOLS tools/*.cpp)
+file(GLOB UTILS utils/*.cpp)
 
 # Take all sources for the executable.
 set(ALL_SOURCES
@@ -25,7 +25,7 @@ set(ALL_SOURCES
     ${ACCOUNTS}
     ${CRYPTO}
     ${PASSWORDS}
-    ${TOOLS}
+    ${UTILS}
 )
 
 # Add the scripts to the executable.

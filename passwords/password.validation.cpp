@@ -1,14 +1,14 @@
-#include "check.hpp"
+#include "password.validation.hpp"
 
-#include "../crypto/decryption.hpp"
-#include "../tools/base64.hpp"
+#include "../crypto/crypto.decryption.hpp"
+#include "../crypto/tool.base64.hpp"
 
 #include <string>
 #include <filesystem>
 #include <fstream>
 
 // Check if the password entered for an account matches with the actual account password.
-bool check_password
+bool validate_password
 (
     const std::string &account,
     const std::string &password
