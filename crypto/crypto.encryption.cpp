@@ -8,7 +8,8 @@
 
 // Make a full encryption.
 // We encrypt the input using AES-128.
-// Then we encode it with hex and Base64 for data integrity.
+// Then we encode it with hex for data integrity.
+// Finally, we encode it using base64 for binary integrity.
 std::string encrypt
 (
     const std::string &input,
@@ -18,20 +19,19 @@ std::string encrypt
 {
     // Convert the input from string to unsigned char*.
     const unsigned char* char_input = reinterpret_cast<const unsigned char*>(input.data());
-    int input_length = input.size();
+    const int input_length = input.size();
 
     // Convert the encryption key and the salting from string to unsigned char*.
     const unsigned char* char_encryption_key = reinterpret_cast<const unsigned char*>(encryption_key.c_str());
     const unsigned char* char_salting = reinterpret_cast<const unsigned char*>(salting.c_str());
 
-    // Will contain the encrypted data.
-    unsigned char cipher[64];
+    // Do the encryption.
+    unsigned char encrypted_data[64];
+    const int encrypted_length = encrypt_aes128_cbc(char_input, input_length, char_encryption_key, encrypted_data, char_salting);
 
-    // Encrypt the input using AES-128.
-    int encrypted_input = encrypt_aes128_cbc(char_input, input_length, char_encryption_key, cipher, char_salting);
-
-    std::string hex = hex_encode(cipher, encrypted_input); // Encode it with hex.
-    std::string output = base64_encode(hex);               // Encode it with Base64.
+    // Fully encode it.
+    const std::string hex = hex_encode(encrypted_data, encrypted_length);
+    const std::string output = base64_encode(hex);
 
     return output;
 }

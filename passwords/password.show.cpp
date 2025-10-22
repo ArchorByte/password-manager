@@ -20,15 +20,15 @@ Account show_password
 {
     if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
     {
-        std::cerr << "This account doesn't exist!" << std::endl;
+        std::cerr << "This account doesn't exist!\n";
         return { "", "" }; // Force log out.
     }
 
-    std::vector<std::string> passwords = list_account_passwords(account.account_name);
+    const std::vector<std::string> passwords = list_account_passwords(account.account_name);
 
     if (passwords.size() < 1)
     {
-        std::cerr << "\nNo password available yet! Create a new password to get started." << std::endl;
+        std::cerr << "\nNo password available yet! Create a new password to get started.\n";
         return account;
     }
 
@@ -37,8 +37,10 @@ Account show_password
 
     for (const std::string &password : passwords)
     {
-        // Format the output depending on if it's the first item or not.
-        if (i == 0) std::cout << password;
+        if (i == 0)  // Format the output depending on the list index.
+        {
+            std::cout << password;
+        }
         else std::cout << ", " << password;
 
         i++;
@@ -46,9 +48,9 @@ Account show_password
 
     std::string password_name;
     int attempts = 0;
-    int max_retries = 3;
+    const int max_attempts = 3;
 
-    while (attempts < max_retries)
+    while (attempts < max_attempts)
     {
         std::cout << "\nEnter the password name: ";
         std::cin >> password_name;
@@ -56,8 +58,7 @@ Account show_password
         // Get rid of the whitespaces.
         password_name = trim(password_name);
 
-        // We deny empty password names and "data" as a password name.
-        // If we don't disallow it, it will give the account password in plain text.
+        // We deny empty password names and "data" as a password name as it's the credentials file.
         if (password_name.empty() || password_name == "data")
         {
             std::cerr << "Invalid password name!";
@@ -68,13 +69,13 @@ Account show_password
         }
         else break;
 
-        std::cerr << " Please, try again." << std::endl;
+        std::cerr << " Please, try again.\n";
         attempts++;
     }
 
-    if (attempts >= max_retries)
+    if (attempts >= max_attempts)
     {
-        std::cerr << "\nAborted after too many failures!" << std::endl;
+        std::cerr << "\nAborted after too many failures!\n";
         return account;
     }
 
@@ -83,31 +84,27 @@ Account show_password
 
     if (!password_file.is_open())
     {
-        std::cerr << "\nFailed to open the password file!" << std::endl;
+        std::cerr << "\nFailed to open the password file!\n";
         return account;
     }
 
-    // Read the file data.
     std::string file_content;
     std::getline(password_file, file_content);
 
     // Find the position of the dash in the file content.
     // Syntax reminder: data.txt -> encrypted_password-encoded_salting.
-    size_t dash_position = file_content.find("-");
+    const size_t dash_position = file_content.find("-");
 
-    // Retrieve the password data.
-    std::string encrypted_password = file_content.substr(0, dash_position);
-    std::string encoded_salting = file_content.substr(dash_position + 1);
+    const std::string encrypted_password = file_content.substr(0, dash_position);
+    const std::string encoded_salting = file_content.substr(dash_position + 1);
 
-    // Decode the salting with Base64 and make sure it's 16-bits large.
     std::string salting = base64_decode(encoded_salting);
-    salting.resize(16, '\0');
+    salting.resize(16, '\0'); // Add padding zeros or cut the salting if necessary to be 16-bit.
 
-    // Use the account password as the encryption key and make sure it's 16-bits long.
     std::string account_password = account.account_password;
     account_password.resize(16, '\0');
 
-    std::string password = decrypt(encrypted_password, account_password, salting); // Fully decrypt the password.
+    const std::string password = decrypt(encrypted_password, account_password, salting); // Fully decrypt the password.
     std::cout << "Password " << password_name << ": " << password << std::endl << std::endl;
 
     return account;

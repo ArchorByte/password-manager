@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-// Clear the user console depending on the operating system we are running on.
+// Clear the console depending on the operating system we are running on.
 void clear_console()
 {
     #if defined(_WIN32)

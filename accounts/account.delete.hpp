@@ -1,7 +1,7 @@
 #include "../main.hpp"
 
-#ifndef ACCOUNTS_DELETE_HPP
-#define ACCOUNTS_DELETE_HPP
+#ifndef ACCOUNT_DELETE_HPP
+#define ACCOUNT_DELETE_HPP
 
 Account delete_account
 (

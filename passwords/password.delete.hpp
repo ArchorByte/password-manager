@@ -1,7 +1,7 @@
 #include "../main.hpp"
 
-#ifndef PASSWORDS_DELETE_HPP
-#define PASSWORDS_DELETE_HPP
+#ifndef PASSWORD_DELETE_HPP
+#define PASSWORD_DELETE_HPP
 
 Account delete_password
 (

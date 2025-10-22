@@ -18,10 +18,9 @@ std::string generate_character_chain
     std::string output;
     std::string characters;
 
-    // We declare the different characters usable for generation.
-    std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    std::string digits = "0123456789";
-    std::string symbols = "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/~`";
+    const std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const std::string digits = "0123456789";
+    const std::string symbols = "!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/~`";
 
     if (!use_letters && !use_digits && !use_special_characters)
     {

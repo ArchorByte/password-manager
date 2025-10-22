@@ -1,7 +1,7 @@
 #include <string>
 
-#ifndef PASSWORDS_CHECK_HPP
-#define PASSWORDS_CHECK_HPP
+#ifndef PASSWORD_VALIDATION_HPP
+#define PASSWORD_VALIDATION_HPP
 
 bool validate_password
 (

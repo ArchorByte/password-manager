@@ -16,33 +16,33 @@ Account delete_account
 {
     if (!std::filesystem::exists("./data/" + account.account_name + "/data.txt"))
     {
-        std::cerr << "This account doesn't exist!" << std::endl;
+        std::cerr << "This account doesn't exist!\n";
         return { "", "" };
     }
 
     std::string account_password;
     int attempts = 0;
-    int max_retries = 3;
+    const int max_attempts = 3;
 
-    while (attempts < max_retries)
+    while (attempts < max_attempts)
     {
         std::cout << "\nEnter your account password: ";
         std::cin >> account_password;
 
-        bool access_granted = validate_password(account.account_name, account_password);
+        const bool access_granted = validate_password(account.account_name, account_password);
 
         if (!access_granted)
         {
-            std::cerr << "Wrong password! Please, try again." << std::endl;
+            std::cerr << "Wrong password! Please, try again.\n";
         }
         else break;
 
         attempts++;
     }
 
-    if (attempts >= max_retries)
+    if (attempts >= max_attempts)
     {
-        std::cerr << "\nAborted after too many failures! You have been logged out for security reasons!" << std::endl;
+        std::cerr << "\nAborted after too many failures! You have been logged out for security reasons!\n";
         return { "", "" }; // Log out the user.
     }
 
@@ -50,17 +50,16 @@ Account delete_account
     std::cout << "Are you 100% sure you want to proceed? This action is irreversible! (y/n) ";
     std::cin >> confirmation;
 
-    // Little note:
-    // We do not trim or lowercase the input to make sure the user really intended to proceed.
-
+    // Note: We do not trim or lowercase the input to make sure the user really intended to proceed.
     if (confirmation != "y")
     {
-        std::cout << "\nAccount deletion aborted!" << std::endl;
-        return { account.account_name, account_password }; // Abort and let the user logged in.
+        std::cout << "\nAccount deletion aborted!\n";
+        return { account.account_name, account_password };
     }
 
     std::filesystem::remove_all("./data/" + account.account_name); // Remove the user data folder.
-    std::cout << "\nAccount deleted successfully!" << std::endl;
+    std::cout << "\nAccount deleted successfully!\n";
 
-    return { "", "" }; // Log out the user.
+    // Log out the user.
+    return { "", "" };
 }

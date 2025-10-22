@@ -11,7 +11,7 @@ bool is_an_integer
 {
     // Try to find any non-digit character in the input using regex.
     static const std::regex pattern(R"(^-?\d+$)");
-    bool is_an_integer = std::regex_match(input, pattern);
+    const bool is_an_integer = std::regex_match(input, pattern);
 
     return is_an_integer;
 }

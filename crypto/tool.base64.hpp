@@ -1,7 +1,7 @@
 #include <string>
 
-#ifndef TOOLS_BASE64_HPP
-#define TOOLS_BASE64_HPP
+#ifndef CRYPTO_BASE64_HPP
+#define CRYPTO_BASE64_HPP
 
 std::string base64_encode
 (

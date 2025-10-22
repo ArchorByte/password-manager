@@ -1,12 +1,12 @@
 #include <string>
 
-#ifndef TOOLS_HEX_HPP
-#define TOOLS_HEX_HPP
+#ifndef CRYPTO_HEX_HPP
+#define CRYPTO_HEX_HPP
 
 std::string hex_encode
 (
     const unsigned char* data,
-    size_t length
+    const size_t &length
 );
 
 std::string hex_decode
