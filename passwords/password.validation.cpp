@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <fstream>
 
-// Check if the password entered for an account matches with the actual account password.
+// Check if the password entered for an account is correct or not.
 bool validate_password
 (
     const std::string &account,
@@ -27,47 +27,39 @@ bool validate_password
         return false;
     }
 
-    // Read the file content and close it.
     std::string file_content;
     std::getline(data_file, file_content);
     data_file.close();
 
     // Find the position of the dash in the file content.
     // Syntax reminder: data.txt -> encrypted_password-encoded_salting.
-    size_t dash_position = file_content.find("-");
+    const size_t dash_position = file_content.find("-");
 
     // Retrieve the account data.
-    std::string encrypted_password = file_content.substr(0, dash_position);
-    std::string encoded_salting = file_content.substr(dash_position + 1);
+    const std::string encrypted_password = file_content.substr(0, dash_position);
+    const std::string encoded_salting = file_content.substr(dash_position + 1);
 
     if (encrypted_password.empty() || encoded_salting.empty())
     {
         return false;
     }
 
-    // Decode the salting with Base64 and make sure it's 16-bits large.
     std::string salting = base64_decode(encoded_salting);
-    salting.resize(16, '\0');
+    salting.resize(16, '\0'); // Add padding zeros or cut the salting key if necessary to be 16-bit.
 
-    // Will contain the output password if the decryption ended successfully.
-    std::string real_password;
-
-    // Use the password provided as potential encryption key and make sure it's 16-bits large.
-    std::string encryption_key = password;
+    std::string encryption_key = password; // Use the password provided as encryption key.
     encryption_key.resize(16, '\0');
 
     try
     {
-        // Try to apply the full decryption with the provided password.
-        real_password = decrypt(encrypted_password, encryption_key, salting);
+        const std::string decrypted_password = decrypt(encrypted_password, encryption_key, salting);
+
+        if (decrypted_password != password)
+        {
+            return false;
+        }
     }
     catch (const std::exception &error)
-    {
-        // If it failed, it's very likely that the password provided is wrong.
-        return false;
-    }
-
-    if (real_password != password)
     {
         return false;
     }

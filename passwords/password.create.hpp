@@ -1,7 +1,7 @@
 #include "../main.hpp"
 
-#ifndef PASSWORDS_CREATE_HPP
-#define PASSWORDS_CREATE_HPP
+#ifndef PASSWORD_CREATE_HPP
+#define PASSWORD_CREATE_HPP
 
 Account create_new_password
 (

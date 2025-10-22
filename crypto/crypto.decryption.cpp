@@ -7,8 +7,7 @@
 #include <string>
 
 // Make a full decryption.
-// We decode the input with Base64, then hex.
-// We finally decrypt it using AES-128.
+// We decode the input using base64, then hex. We finally decrypt the result using AES-128.
 std::string decrypt
 (
     const std::string &input,
@@ -16,24 +15,23 @@ std::string decrypt
     const std::string &salting
 )
 {
-    std::string decoded_input = base64_decode(input); // Decode with Base64.
-    decoded_input = hex_decode(decoded_input);        // Decode with hex.
+    // Entirely decode the input.
+    std::string decoded_input = base64_decode(input);
+    decoded_input = hex_decode(decoded_input);
 
     // Convert the input from string to unsigned char*.
     const unsigned char* char_input = reinterpret_cast<const unsigned char*>(decoded_input.data());
-    int input_length = decoded_input.size();
+    const int input_length = decoded_input.size();
 
-    // Convert the encryption key and salting from string to unsigned char*..
+    // Convert the encryption key and salting from string to unsigned char*.
     const unsigned char* char_encryption_key = reinterpret_cast<const unsigned char*>(encryption_key.c_str());
     const unsigned char* char_salting = reinterpret_cast<const unsigned char*>(salting.c_str());
 
-    // Will contain the decrypted data.
+    // Do the decryption.
     unsigned char decrypted_data[64];
+    const int decrypted_length = decrypt_aes128_cbc(char_input, input_length, char_encryption_key, decrypted_data, char_salting);
 
-    // Do the decryption using AES-128.
-    int decrypted_length = decrypt_aes128_cbc(char_input, input_length, char_encryption_key, decrypted_data, char_salting);
-
-    // Format the output to string.
+    // Format the output into string.
     std::string output(reinterpret_cast<char*>(decrypted_data), decrypted_length);
 
     return output;

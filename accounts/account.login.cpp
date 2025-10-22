@@ -14,32 +14,30 @@ Account account_login()
 {
     std::vector<std::string> accounts_list;
 
-    // We ensure the data directory exists.
-    // We directly abort as if the data directory didn't exist, there isn't any account registered yet.
+    // We ensure the existence of the data directory.
     if (!std::filesystem::exists("./data") || !std::filesystem::is_directory("./data"))
     {
-        std::filesystem::create_directory("./data");
-        std::cerr << "\nNo account registered yet! Please, create an account before continuing." << std::endl;
+        std::cerr << "\nNo account registered yet! Please, create an account before continuing.\n";
         return { "", "" }; // Stay logged out.
     }
 
     // List any folder and file in the data directory.
     for (const auto &object : std::filesystem::directory_iterator("./data/"))
     {
-        std::filesystem::path object_path = object.path();
+        const std::filesystem::path object_path = object.path();
 
-        // We only take directories as accounts are declared by their directories and store the account data.
-        if (object.is_directory())
+        // We only take directories with a data.txt file in it as accounts.
+        if (object.is_directory() && std::filesystem::exists("./data/" + object_path.string() + "/data.txt"))
         {
             std::string object_name = object_path.filename();
-            accounts_list.emplace_back(object_name); // Register the account in the list.
+            accounts_list.emplace_back(object_name);
         }
     }
 
     if (accounts_list.size() < 1)
     {
-        std::cerr << "\nNo account registered yet! Please, create an account before continuing." << std::endl;
-        return { "", "" }; // Stay logged out.
+        std::cerr << "\nNo account registered yet! Please, create an account before continuing.\n";
+        return { "", "" };
     }
 
     std::cout << "\nAvailable accounts: ";
@@ -47,64 +45,66 @@ Account account_login()
 
     for (const std::string &account_name : accounts_list)
     {
-        // Format the output depending on if it's the first item or not.
-        if (i == 0) std::cout << account_name;
+        if (i == 0) // Format the output depending on the list index.
+        {
+            std::cout << account_name;
+        }
         else std::cout << ", " << account_name;
 
         i++;
     }
 
-    std::cout << std::endl;
+    std::cout << "\n";
     std::string account_name;
 
     int attemps = 0;
-    int max_retries = 3;
+    const int max_attempts = 3;
 
-    while (attemps < max_retries)
+    while (attemps < max_attempts)
     {
         std::cout << "\nEnter the account name: ";
         std::cin >> account_name;
 
         if (!std::filesystem::is_directory("./data/" + account_name))
         {
-            std::cerr << "This account doesn't exist! Please, try again." << std::endl;
+            std::cerr << "This account doesn't exist! Please, try again.\n";
         }
         else break;
 
         attemps++;
     }
 
-    if (attemps >= max_retries)
+    if (attemps >= max_attempts)
     {
-        std::cerr << "\nAborted after too many failures!" << std::endl;
-        return { "", "" }; // Stay logged out.
+        std::cerr << "\nAborted after too many failures!\n";
+        return { "", "" };
     }
 
     std::string account_password;
     attemps = 0;
 
-    while (attemps < max_retries)
+    while (attemps < max_attempts)
     {
         std::cout << "Enter the account password: ";
         std::cin >> account_password;
 
-        bool access_granted = validate_password(account_name, account_password);
+        const bool access_granted = validate_password(account_name, account_password);
 
         if (!access_granted)
         {
-            std::cerr << "Wrong password! Please, try again." << std::endl << std::endl;
+            std::cerr << "Wrong password! Please, try again.\n\n";
         }
         else break;
 
         attemps++;
     }
 
-    if (attemps >= max_retries)
+    if (attemps >= max_attempts)
     {
-        std::cerr << "Aborted after too many failures!" << std::endl;
-        return { "", "" }; // Stay logged out.
+        std::cerr << "Aborted after too many failures!\n";
+        return { "", "" };
     }
 
-    std::cout << "\nLogged in successfully!" << std::endl;
+    std::cout << "\nLogged in successfully!\n";
     return { account_name, account_password }; // Grant access to the user.
 }

@@ -14,26 +14,26 @@ void generate_password()
     std::string password;
     std::string input;
 
-    // Default values. Recommended settings.
+    // Default values and minimum recommended settings.
     int length = 12;
     bool use_letters = true;
     bool use_digits = true;
     bool use_special_characters = true;
 
     int attempts = 0;
-    int max_retries = 3;
+    const int max_attempts = 3;
 
-    while (attempts < max_retries)
+    while (attempts < max_attempts)
     {
         std::cout << "\n1/4 - Enter the desired password length: ";
         std::cin >> input;
 
-        input = trim(input);         // Get rid of the whitespaces.
-        input = to_lowercase(input); // Pass the input to lowercases to avoid to deny any capital mistake.
+        input = trim(input); // Get rid of the whitespaces.
+        input = to_lowercase(input);
 
         if (!is_an_integer(input))
         {
-            std::cerr << "Please, enter a number!" << std::endl;
+            std::cerr << "Please, enter a number!\n";
             attempts++;
             continue;
         }
@@ -43,7 +43,7 @@ void generate_password()
 
         if (length < 1 || length > 100)
         {
-            std::cerr << "The password length must be between 1 and 100 characters!" << std::endl;
+            std::cerr << "The password length must be between 1 and 100 characters!\n";
         }
         else if (length < 12)
         {
@@ -51,8 +51,8 @@ void generate_password()
             std::cerr << "The length is inferior to 12 characters which is not recommended! Would you like to proceed anyway? (y/n) ";
             std::cin >> confirmation;
 
-            confirmation = trim(confirmation);         // Get rid of the whitespaces.
-            confirmation = to_lowercase(confirmation); // Pass the input to lowercases to avoid to deny any capital mistake.
+            confirmation = trim(confirmation);
+            confirmation = to_lowercase(confirmation);
 
             if (confirmation == "y")
             {
@@ -64,16 +64,16 @@ void generate_password()
         attempts++;
     }
 
-    if (attempts >= max_retries)
+    if (attempts >= max_attempts)
     {
-        std::cerr << "\nAborted after too many failures!" << std::endl;
+        std::cerr << "\nAborted after too many failures!\n";
         return;
     }
 
     std::cout << "2/4 - Do you want to use letters in the generation? (y/n) ";
     std::cin >> input;
 
-    if (input != "y")
+    if (to_lowercase(input) != "y")
     {
         use_letters = false;
     }
@@ -81,7 +81,7 @@ void generate_password()
     std::cout << "3/4 - Do you want to use digits in the generation? (y/n) ";
     std::cin >> input;
 
-    if (input != "y")
+    if (to_lowercase(input) != "y")
     {
         use_digits = false;
     }
@@ -89,17 +89,17 @@ void generate_password()
     std::cout << "4/4 - Do you want to use special characters in the generation? (y/n) ";
     std::cin >> input;
 
-    if (input != "y")
+    if (to_lowercase(input) != "y")
     {
         use_special_characters = false;
     }
 
     if (!use_letters && !use_digits && !use_special_characters)
     {
-        std::cerr << "\nYou have to select at least one option to generate a password! Aborted." << std::endl;
+        std::cerr << "\nYou have to select at least one option to generate a password! Aborted.\n";
         return;
     }
 
     password = generate_character_chain(length, use_letters, use_digits, use_special_characters);
-    std::cout << "\nGenerated password: " << password << std::endl;
+    std::cout << "\nGenerated password: " << password << "\n";
 }

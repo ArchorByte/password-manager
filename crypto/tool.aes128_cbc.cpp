@@ -69,7 +69,7 @@ int encrypt_aes128_cbc
     }
 
     // Initialize CBC encryption.
-    bool initialization = EVP_EncryptInit_ex(context, EVP_aes_128_cbc(), nullptr, encryption_key, iv);
+    const bool initialization = EVP_EncryptInit_ex(context, EVP_aes_128_cbc(), nullptr, encryption_key, iv);
 
     if (!initialization)
     {
@@ -78,7 +78,7 @@ int encrypt_aes128_cbc
     }
 
     // Do the encryption.
-    bool update = EVP_EncryptUpdate(context, cipher, &length, input, input_length);
+    const bool update = EVP_EncryptUpdate(context, cipher, &length, input, input_length);
 
     if (!update)
     {
@@ -87,7 +87,7 @@ int encrypt_aes128_cbc
     }
 
     cipher_length += length;
-    bool finalization = EVP_EncryptFinal_ex(context, cipher + length, &length); // Add paddings.
+    const bool finalization = EVP_EncryptFinal_ex(context, cipher + length, &length); // Add paddings.
 
     if (!finalization)
     {
@@ -148,7 +148,7 @@ int decrypt_aes128_cbc
     }
 
     // Initialize CBC decryption.
-    bool initialization = EVP_DecryptInit_ex(context, EVP_aes_128_cbc(), nullptr, encryption_key, iv);
+    const bool initialization = EVP_DecryptInit_ex(context, EVP_aes_128_cbc(), nullptr, encryption_key, iv);
 
     if (!initialization)
     {
@@ -157,7 +157,7 @@ int decrypt_aes128_cbc
     }
 
     // Do the decryption.
-    bool update = EVP_DecryptUpdate(context, output, &length, cipher, cipher_length);
+    const bool update = EVP_DecryptUpdate(context, output, &length, cipher, cipher_length);
 
     if (!update)
     {
@@ -166,7 +166,7 @@ int decrypt_aes128_cbc
     }
 
     input_length += length;
-    bool finalization = EVP_DecryptFinal_ex(context, output + length, &length); // Remove the paddings.
+    const bool finalization = EVP_DecryptFinal_ex(context, output + length, &length); // Remove the paddings.
 
     if (!finalization)
     {

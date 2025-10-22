@@ -1,6 +1,8 @@
-#ifndef ACCOUNTS_CREATE_HPP
-#define ACCOUNTS_CREATE_HPP
+#include "../main.hpp"
 
-void create_new_account();
+#ifndef ACCOUNT_CREATE_HPP
+#define ACCOUNT_CREATE_HPP
+
+Account create_new_account();
 
 #endif

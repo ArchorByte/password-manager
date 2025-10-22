@@ -1,7 +1,7 @@
 #include "../main.hpp"
 
-#ifndef ACCOUNTS_LOGIN_HPP
-#define ACCOUNTS_LOGIN_HPP
+#ifndef ACCOUNT_LOGIN_HPP
+#define ACCOUNT_LOGIN_HPP
 
 Account account_login();
 
